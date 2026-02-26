@@ -1,24 +1,23 @@
 export default async function handler(req, res) {
-  // 1. POST 요청이 아니면 차단합니다.
+  // 1. POST 요청이 아니면 차단
   if (req.method !== 'POST') {
     return res.status(405).json({ error: '잘못된 접근입니다.' });
   }
 
-  // 2. Vercel 환경변수(비밀 금고)에서 API 키를 가져옵니다.
+  // 2. Vercel 환경변수에서 API 키 가져오기
   const apiKey = process.env.GEMINI_API_KEY; 
   
   if (!apiKey) {
     return res.status(500).json({ error: '서버에 API 키가 설정되지 않았습니다.' });
   }
 
-  // 3. 앱에서 보낸 사용자의 입력 문장을 받습니다.
   const { currentInput } = req.body;
 
   if (!currentInput) {
     return res.status(400).json({ error: '입력된 문장이 없습니다.' });
   }
 
-  // 4. AI에게 내릴 정밀한 명령서 세팅
+  // 3. AI에게 내릴 프롬프트
   const promptText = `
 You are a trendy English tutor. Convert the following Korean sentence into 3 different English versions.
 Korean Input: "${currentInput}"
@@ -38,8 +37,8 @@ You MUST respond ONLY with a valid JSON object matching exactly this structure, 
 }`;
 
   try {
-    // 🌟 해결 핵심: v1beta 주소를 사용하고, 모델명을 'gemini-1.5-flash-latest'로 아주 명확하게 지정!
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+    // 🌟 해결 핵심: 꼬리표를 모두 뗀 가장 순수한 기본 모델명 'gemini-1.5-flash' 사용
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -49,9 +48,10 @@ You MUST respond ONLY with a valid JSON object matching exactly this structure, 
 
     const data = await response.json();
     
+    // 구글 API에서 에러를 보냈을 경우
     if(data.error) throw new Error(data.error.message);
 
-    // 6. JSON 데이터만 안전하게 추출합니다.
+    // 4. JSON 데이터만 안전하게 추출
     let rawText = data.candidates[0].content.parts[0].text;
     const jsonStart = rawText.indexOf('{');
     const jsonEnd = rawText.lastIndexOf('}') + 1;
@@ -63,7 +63,7 @@ You MUST respond ONLY with a valid JSON object matching exactly this structure, 
     const cleanJson = rawText.substring(jsonStart, jsonEnd);
     const resultData = JSON.parse(cleanJson);
 
-    // 7. 성공적으로 변환된 데이터를 다시 앱으로 던져줍니다.
+    // 5. 성공 데이터 반환
     return res.status(200).json(resultData);
 
   } catch (error) {
