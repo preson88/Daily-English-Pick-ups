@@ -38,13 +38,13 @@ You MUST respond ONLY with a valid JSON object matching exactly this structure, 
 }`;
 
   try {
-    // 5. 서버가 직접 구글 Gemini AI로 요청을 보냅니다.
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // 🌟 해결 핵심: v1beta 대신 가장 안정적인 v1 주소 사용!
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: promptText }] }],
-        generationConfig: { response_mime_type: "application/json" }
+        contents: [{ parts: [{ text: promptText }] }]
+        // 옵션 충돌을 막기 위해 generationConfig 제거
       })
     });
 
