@@ -34,8 +34,8 @@ You MUST respond ONLY with a valid JSON object matching exactly this structure, 
 }`;
 
   try {
-    // 🌟 해결 핵심: flash 모델 대신, 더 똑똑하고 모든 계정에 열려있는 'gemini-1.5-pro' 모델로 호출합니다!
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
+    // 🌟 해결 핵심: flash 모델 대신, 더 똑똑하고 모든 계정에 열려있는 'gemini-2.5-pro' 모델로 호출합니다!
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
