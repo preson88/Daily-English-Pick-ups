@@ -54,7 +54,7 @@
             max-width: 600px;
             margin-top: 20px;
             position: relative;
-            padding-bottom: 90px;
+            padding-bottom: 160px;
         }
         
         #themeToggleBtn {
@@ -774,6 +774,22 @@
             cursor: pointer;
             font-size: 20px;
         }
+        /* 💰 광고 영역 스타일 */
+        
+        .ad-slot {
+            width: 100%;
+            text-align: center;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.02);
+            min-height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #ccc;
+            border: 1px dashed #eee;
+        }
     </style>
 </head>
 
@@ -785,10 +801,10 @@
         </div>
     </div>
 
-    <div id="ad-interstitial" class="ad-interstitial-overlay">
-        <div class="ad-interstitial-content">Google AdMob<br>전면 광고 (Interstitial)</div>
+    <!-- <div id="ad-interstitial" class="ad-interstitial-overlay" style="display:none;">
+        <div class="ad-interstitial-content">Google AdMob<br>전면 광고</div>
         <button class="ad-close-btn" onclick="closeInterstitial()">광고 닫기 (X)</button>
-    </div>
+    </div> -->
 
     <div class="container">
         <button id="themeToggleBtn"><i class="fas fa-moon"></i></button>
@@ -797,10 +813,15 @@
             <div class="main-title" onclick="goToMain()">
                 Daily English Pick-ups
             </div>
+            <div class="ad-slot">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5583094134831289" data-ad-slot="YOUR_SLOT_ID" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
 
         <div id="main-screen">
-
             <div class="input-card">
                 <label class="input-label">학습할 한국어 문장</label>
                 <div class="input-box">
@@ -809,10 +830,6 @@
                     <button id="generateBtn"><i class="far fa-paper-plane"></i> 생성</button>
                 </div>
             </div>
-
-            <!--<div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (메인 상단)</div> -->
-
-            <div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (메인 하단)</div>
         </div>
 
         <div id="loading-screen">
@@ -827,8 +844,6 @@
                 <button class="action-btn" onclick="exportToA4('png')"><i class="fas fa-image"></i> PNG</button>
                 <button class="action-btn dark" onclick="exportToA4('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
             </div>
-
-            <div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (결과 화면)</div>
 
             <div id="capture-area">
                 <div class="note-header">📝 오늘의 줍줍 영어 노트</div>
@@ -882,7 +897,12 @@
                 <button id="tabWord" class="tab-btn" onclick="switchTab('word')">❤️ 단어</button>
             </div>
 
-            <div class="ad-banner">Google AdMob 배너 광고 (보관함 화면)</div>
+            <div class="ad-slot">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5583094134831289" data-ad-slot="YOUR_SLOT_ID" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
 
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -911,12 +931,18 @@
                 <div class="fc-instruction">카드를 터치하면 정답이 보입니다 👆</div>
             </div>
 
+            <div class="ad-slot">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5583094134831289" data-ad-slot="YOUR_SLOT_ID" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
             <div class="fc-controls">
                 <button class="archive-main-btn" onclick="closeFlashcard()"><i class="fas fa-times"></i> 그만하기</button>
                 <button class="archive-main-btn" onclick="nextCard()" style="background-color: #111827; color: white;"><i class="fas fa-arrow-right"></i> 다음 단어</button>
             </div>
 
-            <div class="ad-banner" style="margin-top: 25px;">Google AdMob 배너 광고 (퀴즈 하단)</div>
         </div>
 
         <div id="quiz-setup-screen" style="display:none;">
@@ -1369,12 +1395,13 @@
 
         window.triggerQuizInterstitial = function() {
             if (savedWords.length < 1) return alert('찜한 단어가 없습니다! ❤️');
-            document.getElementById('ad-interstitial').style.display = 'flex';
+            // document.getElementById('ad-interstitial').style.display = 'flex';
+            startQuiz();
         }
 
         window.closeInterstitial = function() {
-            document.getElementById('ad-interstitial').style.display = 'none';
-            startQuiz();
+            // document.getElementById('ad-interstitial').style.display = 'none';
+            // startQuiz();
         }
 
         window.startQuiz = function() {
