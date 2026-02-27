@@ -32,8 +32,9 @@
 
     .input-card { background-color: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03); margin-bottom: 20px; border: 1px solid var(--border-color); transition: background-color 0.3s; }
     .input-label { font-size: 13px; font-weight: 700; color: var(--text-color); margin-bottom: 12px; display: block; }
-    .input-box { display: flex; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 4px; }
-    #koreanInput { flex: 1; border: none; background: transparent; padding: 10px; font-size: 15px; outline: none; width: 100%; color: var(--text-color); }
+    .input-box { display: flex; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 4px; align-items: center; }
+    #micBtn { background: none; border: none; color: #9ca3af; font-size: 18px; cursor: pointer; padding: 0 10px; transition: color 0.3s; }
+    #koreanInput { flex: 1; border: none; background: transparent; padding: 10px 5px; font-size: 15px; outline: none; width: 100%; color: var(--text-color); }
     #generateBtn { background-color: #3b82f6; color: white; border: none; border-radius: 6px; padding: 10px 15px; font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; }
 
     .center-btn-wrap { text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -49,12 +50,13 @@
     #capture-area { background-color: var(--note-bg); padding: 30px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; box-sizing: border-box; margin-bottom: 20px; color: var(--text-color); transition: background-color 0.3s; }
     
     .note-header { font-size: 20px; font-weight: 700; margin-bottom: 15px; border-bottom: 2px solid var(--text-color); padding-bottom: 10px; }
-    .original-sentence-box { background-color: var(--original-box-bg); border: 1px solid var(--original-box-border); border-radius: 12px; padding: 15px; text-align: center; font-size: 15px; color: var(--sub-text); font-style: italic; margin-bottom: 30px; word-break: keep-all; }
+    .original-sentence-box { background-color: var(--original-box-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; font-size: 15px; color: var(--sub-text); font-style: italic; margin-bottom: 30px; word-break: keep-all; }
     
     .section-block { margin-bottom: 25px; }
     .section-title { font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center;}
     .number-badge { background-color: var(--text-color); color: var(--bg-color); width: 20px; height: 20px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 11px; margin-right: 8px; }
-    .speaker-btn { background: none; border: none; font-size: 16px; color: #9ca3af; padding: 5px; cursor: pointer; }
+    .speaker-btn { background: none; border: none; font-size: 16px; color: #9ca3af; padding: 5px; cursor: pointer; transition: color 0.2s; }
+    .speaker-btn:hover { color: #3b82f6; }
     
     .english-text { font-family: 'Georgia', serif; font-size: 18px; margin-bottom: 8px; line-height: 1.4; color: var(--text-color); font-weight: bold;}
     .korean-text { font-size: 14px; color: var(--sub-text); margin-bottom: 12px; }
@@ -70,7 +72,7 @@
     .voca-emoji { margin-right: 10px; font-size: 18px; }
     .voca-word { font-weight: 700; margin-right: 8px; border-bottom: 2px dotted #9ca3af; }
     .voca-meaning { color: var(--sub-text); flex: 1; font-size: 13px; }
-    .voca-heart { color: #e5e7eb; font-size: 18px; cursor: pointer; transition: color 0.2s; }
+    .voca-heart { color: #e5e7eb; font-size: 18px; cursor: pointer; transition: color 0.2s; margin-left: auto;}
     .voca-heart.active { color: #ef4444; }
 
     .archive-container { background-color: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -103,58 +105,10 @@
     .spinner { font-size: 45px; color: var(--point-color); animation: spin 1s linear infinite; margin-bottom: 25px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* 💰 광고 전용 스타일 */
-    .ad-banner {
-      width: 100%;
-      height: 60px;
-      background-color: var(--input-bg);
-      border: 1px dashed #cbd5e1;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #9ca3af;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-    }
-    
-    /* 💰 전면 광고 팝업 스타일 */
-    .ad-interstitial-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.9);
-      z-index: 9999;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .ad-interstitial-content {
-      width: 300px;
-      height: 250px;
-      background-color: #374151;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 20px;
-      text-align: center;
-      line-height: 1.5;
-    }
-    .ad-close-btn {
-      background-color: #ef4444;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .ad-banner { width: 100%; height: 60px; background-color: var(--input-bg); border: 1px dashed #cbd5e1; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #9ca3af; font-size: 12px; font-weight: 700; margin-bottom: 20px; box-sizing: border-box; }
+    .ad-interstitial-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; }
+    .ad-interstitial-content { width: 300px; height: 250px; background-color: #374151; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 16px; margin-bottom: 20px; text-align: center; line-height: 1.5; }
+    .ad-close-btn { background-color: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
     
     .top-menu-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 25px; }
     .menu-btn { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 14px; font-size: 12px; font-weight: 700; color: var(--text-color); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s; }
@@ -179,11 +133,11 @@
       </div>
       
       <div class="top-menu-row">
-        <button id="saveBookmarkBtn" class="menu-btn"><i class="far fa-bookmark"></i> 문장저장</button>
+        <button id="topSaveBookmarkBtn" class="menu-btn" onclick="toggleBookmark()"><i class="far fa-bookmark"></i> 문장저장</button>
         <button class="menu-btn" onclick="openArchive()"><i class="fas fa-archive"></i> 보관함</button>
         <button class="menu-btn active-blue" onclick="openQuizSetup()"><i class="fas fa-clone"></i> 단어퀴즈</button>
-        <button id="saveImgBtn" class="menu-btn"><i class="fas fa-image"></i> PNG</button>
-        <button id="savePdfBtn" class="menu-btn active-green"><i class="fas fa-file-pdf"></i> PDF</button>
+        <button class="menu-btn" onclick="exportToA4('png')"><i class="fas fa-image"></i> PNG</button>
+        <button class="menu-btn active-green" onclick="exportToA4('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
       </div>
     </div>
 
@@ -192,14 +146,13 @@
       <div class="input-card">
         <label class="input-label">학습할 한국어 문장</label>
         <div class="input-box">
+          <button id="micBtn" title="음성 입력"><i class="fas fa-microphone"></i></button>
           <input type="text" id="koreanInput" placeholder="예: 배고파, 피자 먹고 싶다">
           <button id="generateBtn"><i class="far fa-paper-plane"></i> 생성</button>
         </div>
       </div>
 
-      <div class="ad-banner" data-html2canvas-ignore="true">
-        Google AdMob 배너 광고 (메인 상단)
-      </div>
+      <div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (메인 상단)</div>
 
       <div class="input-card" id="main-quiz-section">
         <h3 style="margin-top: 0; color: var(--text-color);">🃏 단어 퀴즈 설정</h3>
@@ -223,9 +176,7 @@
         <button class="archive-main-btn" onclick="triggerQuizInterstitial()" style="width:100%; justify-content:center; padding:15px; background-color: #3b82f6; color: white; border:none; margin-bottom: 5px;">퀴즈 시작!</button>
       </div>
 
-      <div class="ad-banner" data-html2canvas-ignore="true">
-        Google AdMob 배너 광고 (메인 하단)
-      </div>
+      <div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (메인 하단)</div>
     </div>
 
     <div id="loading-screen">
@@ -236,14 +187,12 @@
 
     <div id="result-screen">
       <div class="action-buttons-row">
-        <button id="saveBookmarkBtn" class="action-btn"><i class="far fa-bookmark"></i> 저장</button>
-        <button id="saveImgBtn" class="action-btn"><i class="fas fa-image"></i> PNG</button>
-        <button id="savePdfBtn" class="action-btn dark"><i class="fas fa-file-pdf"></i> PDF</button>
+        <button id="resSaveBookmarkBtn" class="action-btn" onclick="toggleBookmark()"><i class="far fa-bookmark"></i> 저장</button>
+        <button class="action-btn" onclick="exportToA4('png')"><i class="fas fa-image"></i> PNG</button>
+        <button class="action-btn dark" onclick="exportToA4('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
       </div>
 
-      <div class="ad-banner" data-html2canvas-ignore="true">
-        Google AdMob 배너 광고 (결과 화면)
-      </div>
+      <div class="ad-banner" data-html2canvas-ignore="true">Google AdMob 배너 광고 (결과 화면)</div>
 
       <div id="capture-area">
         <div class="note-header">📝 오늘의 줍줍 영어 노트</div>
@@ -294,9 +243,7 @@
         <button id="tabWord" class="tab-btn" onclick="switchTab('word')">❤️ 단어</button>
       </div>
       
-      <div class="ad-banner">
-        Google AdMob 배너 광고 (보관함 화면)
-      </div>
+      <div class="ad-banner">Google AdMob 배너 광고 (보관함 화면)</div>
 
       <div class="search-box">
         <i class="fas fa-search"></i>
@@ -330,9 +277,7 @@
         <button class="archive-main-btn" onclick="nextCard()" style="background-color: #111827; color: white;"><i class="fas fa-arrow-right"></i> 다음 단어</button>
       </div>
 
-      <div class="ad-banner" style="margin-top: 25px;">
-        Google AdMob 배너 광고 (퀴즈 하단)
-      </div>
+      <div class="ad-banner" style="margin-top: 25px;">Google AdMob 배너 광고 (퀴즈 하단)</div>
     </div>
 
   </div>
@@ -357,7 +302,6 @@
     const loadingScreen = document.getElementById('loading-screen');
     
     const inputDisplay = document.getElementById('inputSentenceDisplay');
-    const saveBookmarkBtn = document.getElementById('saveBookmarkBtn');
     const searchInput = document.getElementById('searchInput');
     const quizBtnWrap = document.getElementById('quizBtnWrap');
 
@@ -381,7 +325,39 @@
       this.innerHTML = isDarkMode ? '<i class="fas fa-sun" style="color: #fbbf24;"></i>' : '<i class="fas fa-moon"></i>';
     });
 
-    // 🚀 보안을 위해 완전히 분리된 서버(api/generate)로만 요청을 보냅니다! (앱에는 API 키가 없습니다)
+    // 🎤 음성 인식(STT) 로직
+    const micBtn = document.getElementById('micBtn');
+    const koreanInput = document.getElementById('koreanInput');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'ko-KR';
+      recognition.interimResults = false;
+
+      micBtn.addEventListener('click', () => {
+        recognition.start();
+        micBtn.style.color = '#ef4444'; // 빨간색으로 변경 (녹음 중)
+        koreanInput.placeholder = "듣고 있습니다...";
+      });
+
+      recognition.onresult = (event) => {
+        koreanInput.value = event.results[0][0].transcript;
+      };
+
+      recognition.onend = () => {
+        micBtn.style.color = '#9ca3af'; // 원래 색으로 복구
+        koreanInput.placeholder = "예: 배고파, 피자 먹고 싶다";
+      };
+
+      recognition.onerror = () => {
+        micBtn.style.color = '#9ca3af';
+        alert("음성 인식에 실패했습니다. 마이크 권한을 확인해주세요.");
+      };
+    } else {
+      micBtn.style.display = 'none'; // 지원하지 않는 브라우저면 숨김
+    }
+
     document.getElementById('generateBtn').addEventListener('click', async function() {
       const inputVal = document.getElementById('koreanInput').value;
       
@@ -401,7 +377,6 @@
       loadingScreen.style.display = 'block';
 
       try {
-        // 내 서버(/api/generate)에 번역을 요청합니다.
         const response = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -454,7 +429,7 @@
           li.innerHTML = `
             <span class="voca-emoji">${item.emoji}</span>
             <span class="voca-word">${item.word}</span>
-            <span class="voca-meaning">: ${item.meaning}</span>
+            <span class="voca-meaning">뜻 : ${item.meaning}</span>
             <i class="fas fa-heart voca-heart ${isHearted}" data-word="${item.word}" 
                onclick="toggleWordLike(this, '${item.word.replace(/'/g, "\\'")}', '${item.meaning.replace(/'/g, "\\'")}', '${item.emoji}')" 
                data-html2canvas-ignore="true"></i>
@@ -463,13 +438,7 @@
         });
       }
 
-      if (savedSentences.includes(currentInput)) {
-        saveBookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> 완료';
-        saveBookmarkBtn.classList.add('saved');
-      } else {
-        saveBookmarkBtn.innerHTML = '<i class="far fa-bookmark"></i> 저장';
-        saveBookmarkBtn.classList.remove('saved');
-      }
+      updateBookmarkUI();
 
       hideAll();
       resultScreen.style.display = 'block';
@@ -487,19 +456,30 @@
       }
     };
 
-    saveBookmarkBtn.addEventListener('click', function() {
+    window.toggleBookmark = function() {
       const index = savedSentences.indexOf(currentInput);
       if (index === -1) {
         savedSentences.push(currentInput);
-        this.innerHTML = '<i class="fas fa-bookmark"></i> 완료';
-        this.classList.add('saved');
       } else {
         savedSentences.splice(index, 1); 
-        this.innerHTML = '<i class="far fa-bookmark"></i> 저장';
-        this.classList.remove('saved');
       }
       localStorage.setItem('mySentences', JSON.stringify(savedSentences));
-    });
+      updateBookmarkUI();
+    };
+
+    function updateBookmarkUI() {
+      const isSaved = savedSentences.includes(currentInput);
+      const topBtn = document.getElementById('topSaveBookmarkBtn');
+      const resBtn = document.getElementById('resSaveBookmarkBtn');
+
+      if (isSaved) {
+        if(topBtn) { topBtn.innerHTML = '<i class="fas fa-bookmark"></i> 완료'; topBtn.classList.add('saved'); }
+        if(resBtn) { resBtn.innerHTML = '<i class="fas fa-bookmark"></i> 완료'; resBtn.classList.add('saved'); }
+      } else {
+        if(topBtn) { topBtn.innerHTML = '<i class="far fa-bookmark"></i> 문장저장'; topBtn.classList.remove('saved'); }
+        if(resBtn) { resBtn.innerHTML = '<i class="far fa-bookmark"></i> 저장'; resBtn.classList.remove('saved'); }
+      }
+    }
 
     window.toggleWordLike = function(heartElement, word, meaning, emoji) {
       heartElement.classList.toggle('active');
@@ -514,17 +494,17 @@
       localStorage.setItem('myWords', JSON.stringify(savedWords));
     };
 
-    const captureArea = document.getElementById('capture-area');
-    
-    function exportToA4(type) {
+    window.exportToA4 = function(type) {
+      const captureArea = document.getElementById('capture-area');
       html2canvas(captureArea, { 
         scale: 2, 
         backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
         onclone: function (clonedDoc) {
           const clonedArea = clonedDoc.getElementById('capture-area');
           clonedArea.style.width = '210mm'; 
-          clonedArea.style.padding = '50px'; 
+          clonedArea.style.padding = '40px'; 
           clonedArea.style.borderRadius = '0'; 
+          clonedArea.style.boxShadow = 'none';
         }
       }).then(canvas => {
         if(type === 'png') {
@@ -542,10 +522,7 @@
           pdf.save('Daily_English_Note.pdf');
         }
       });
-    }
-
-    document.getElementById('saveImgBtn').addEventListener('click', () => exportToA4('png'));
-    document.getElementById('savePdfBtn').addEventListener('click', () => exportToA4('pdf'));
+    };
 
     function hideAll() {
       ['main-screen', 'result-screen', 'archive-screen', 'flashcard-screen', 'loading-screen'].forEach(s => {
@@ -611,7 +588,7 @@
           filtered.forEach(w => {
             const li = document.createElement('li');
             li.className = 'archive-item clickable'; 
-            li.innerHTML = `<span>${w.emoji} <b>${w.word}</b> : ${w.meaning}</span> <i class="fas fa-chevron-right link-icon"></i>`;
+            li.innerHTML = `<span>${w.emoji} <b>${w.word}</b> 뜻 : ${w.meaning}</span> <i class="fas fa-chevron-right link-icon"></i>`;
             li.onclick = () => loadNoteScreen(w.sourceSentence || currentInput); 
             listWord.appendChild(li);
           });
