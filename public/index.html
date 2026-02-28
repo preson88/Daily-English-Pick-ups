@@ -96,6 +96,31 @@
             opacity: 0.7;
         }
         
+        .desc-toggle {
+            display: block;
+            margin: 10px auto 4px;
+            color: var(--point-color);
+            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .description {
+            font-size: 14px;
+            color: var(--sub-text);
+            text-align: center;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .additional-info {
+            font-size: 13px;
+            color: var(--sub-text);
+            text-align: center;
+            margin-top: 8px;
+        }
+        
         .input-card {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -218,6 +243,68 @@
             background-color: #10b981;
             border-color: #10b981;
             color: white;
+        }
+        /* pastel color variants for export buttons */
+        
+        .btn-png {
+            background-color: #a0d8ef;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-png:hover {
+            background-color: #92cfea;
+        }
+        
+        .btn-pdf {
+            background-color: #f7a1b0;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #f497ab;
+        }
+        
+        .btn-notion {
+            background-color: #b5e7a0;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-notion:hover {
+            background-color: #a8dd95;
+        }
+        /* dark mode adjustments for pastel buttons */
+        
+        body.dark-mode .btn-png {
+            background-color: #6fa8dc;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-png:hover {
+            background-color: #609cce;
+        }
+        
+        body.dark-mode .btn-pdf {
+            background-color: #d6818b;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-pdf:hover {
+            background-color: #c8737d;
+        }
+        
+        body.dark-mode .btn-notion {
+            background-color: #86b96a;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-notion:hover {
+            background-color: #78ae5e;
         }
         
         #capture-area {
@@ -829,6 +916,21 @@
                     <input type="text" id="koreanInput" placeholder="예: 배고파, 피자 먹고 싶다">
                     <button id="generateBtn"><i class="far fa-paper-plane"></i> 생성</button>
                 </div>
+                <br>
+                <div id="descToggle" class="desc-toggle">앱 설명 접기 ▲</div>
+                <br>
+                <div id="appDescription" class="description">
+                    <ul style="text-align:left; display:inline-block; padding-left:20px; margin:0;">
+                        <li>학습할 <b>한국어 문장</b>을 입력한 뒤 <b>생성 버튼</b>을 누르세요.</li>
+                        <li><b>보관함</b>에서 생성한 학습 노트와 찜한 단어를 한눈에 확인할 수 있어요!</li>
+                        <li>찜한 단어를 이용해 플래시 카드로 이루어진 <b>단어퀴즈</b>도 풀어보세요.</li>
+                    </ul>
+                    <div style="margin-top:8px;">아래 예시와 같이 학습노트가 생성됩니다. 바로 문장을 입력해 시작해보세요!</div>
+                </div>
+                <div id="additionalInfo" class="additional-info">
+                    <!-- 추가 정보나 예시를 여기에 넣을 수 있습니다 -->
+                    <img id="exampleImg" src="example.png" alt="예시 이미지" style="max-width:100%; border-radius:8px; margin-top:10px;" />
+                </div>
             </div>
         </div>
 
@@ -841,8 +943,9 @@
         <div id="result-screen">
             <div class="action-buttons-row">
                 <button id="resSaveBookmarkBtn" class="action-btn" onclick="toggleBookmark()"><i class="far fa-bookmark"></i> 저장</button>
-                <button class="action-btn" onclick="exportToA4('png')"><i class="fas fa-image"></i> PNG</button>
-                <button class="action-btn dark" onclick="exportToA4('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="action-btn btn-png" onclick="exportToA4('png')"><i class="fas fa-image"></i> PNG</button>
+                <button class="action-btn btn-pdf" onclick="exportToA4('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="action-btn btn-notion" onclick="openNotion()"><i class="fas fa-copy"></i> NOTION</button>
             </div>
 
             <div id="capture-area">
@@ -916,9 +1019,9 @@
                 <button class="action-btn dark" onclick="openQuizSetup()" style="width: 100%; justify-content: center; padding: 12px;"><i class="fas fa-clone"></i> 단어 플래시카드 하러가기</button>
             </div>
 
-            <div class="center-btn-wrap" style="margin-top: 20px;">
+            <!-- <div class="center-btn-wrap" style="margin-top: 20px;">
                 <button class="archive-main-btn" onclick="closeArchive()"><i class="fas fa-times"></i> 닫기</button>
-            </div>
+            </div> -->
         </div>
 
         <div id="flashcard-screen">
@@ -1293,6 +1396,11 @@
             });
         };
 
+        window.openNotion = function() {
+            // placeholder action – later integrate with Notion API
+            alert('NOTION 기능은 곧 지원됩니다.');
+        };
+
         function hideAll() {
             ['main-screen', 'result-screen', 'archive-screen', 'flashcard-screen', 'loading-screen', 'quiz-setup-screen'].forEach(s => {
                 document.getElementById(s).style.display = 'none';
@@ -1314,6 +1422,38 @@
             mainScreen.style.display = 'block';
             updateNavActive('navGenerateBtn');
             window.scrollTo(0, 0);
+            // main 화면 진입 시 저장된 상태 적용
+            if (typeof applyDescState === 'function') {
+                applyDescState(readDescState());
+            }
+        }
+
+        // 설명 토글 링크 이벤트 및 상태 저장
+        const descToggle = document.getElementById('descToggle');
+        const appDesc = document.getElementById('appDescription');
+        const additionalInfo = document.getElementById('additionalInfo');
+        const descStateKey = 'appDescOpen';
+
+        function applyDescState(open) {
+            if (appDesc) appDesc.style.display = open ? 'block' : 'none';
+            if (additionalInfo) additionalInfo.style.display = open ? 'block' : 'none';
+            if (descToggle) descToggle.textContent = open ? '앱 설명 접기 ▲' : '앱 설명 더보기 ▼';
+            localStorage.setItem(descStateKey, open ? '1' : '0');
+        }
+
+        function readDescState() {
+            const val = localStorage.getItem(descStateKey);
+            return val !== '0'; // default true if not set
+        }
+
+        if (descToggle && appDesc) {
+            // 초기 상태 설정
+            applyDescState(readDescState());
+
+            descToggle.addEventListener('click', () => {
+                const currentlyOpen = appDesc.style.display !== 'none';
+                applyDescState(!currentlyOpen);
+            });
         }
 
         window.openArchive = function() {
