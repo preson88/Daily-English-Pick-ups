@@ -1396,9 +1396,95 @@
             });
         };
 
-        window.openNotion = function() {
-            // placeholder action – later integrate with Notion API
-            alert('NOTION 기능은 곧 지원됩니다.');
+        window.openNotion = async function() {
+
+            alert('현재 Notion 저장 기능은 점검 중입니다.');
+            // const clientId = 'YOUR_CLIENT_ID'; // replace with your integration's client ID
+            // const redirectUri = encodeURIComponent(window.location.origin + '/api/auth/callback/notion');
+            // const state = Math.random().toString(36).substring(2);
+            // localStorage.setItem('notionOauthState', state);
+            // const url = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&response_type=code&owner=user&redirect_uri=${redirectUri}&state=${state}`;
+            // window.location.href = url;
+
+            // // Notion DB IDs keys (use fixed keys so they don't collide with other storage)
+            // const KEY_DAILY = '315208cc9974800eae47f0e8ed5df297';
+            // const KEY_SENTENCE = '315208cc9974806189add67f1cac9e10';
+            // const KEY_WORD = '315208cc997480f595aacd76b874b836';
+
+            // // load previous IDs if present
+            // let dailyDbId = localStorage.getItem(KEY_DAILY) || '';
+            // let sentenceDbId = localStorage.getItem(KEY_SENTENCE) || '';
+            // let wordDbId = localStorage.getItem(KEY_WORD) || '';
+
+            // // prompt only when missing
+            // if (!dailyDbId) dailyDbId = prompt('Daily 노트용 데이터베이스 ID를 입력하세요.');
+            // if (!sentenceDbId) sentenceDbId = prompt('문장 DB ID를 입력하세요.');
+            // if (!wordDbId) wordDbId = prompt('단어 DB ID를 입력하세요.');
+
+            // try {
+            //     if (dailyDbId) localStorage.setItem(KEY_DAILY, dailyDbId);
+            //     if (sentenceDbId) localStorage.setItem(KEY_SENTENCE, sentenceDbId);
+            //     if (wordDbId) localStorage.setItem(KEY_WORD, wordDbId);
+            // } catch (e) {
+            //     // ignore storage failures
+            // }
+
+            // // Determine input sentence (prefer currentInput if result shown)
+            // const inputVal = (typeof currentInput === 'string' && currentInput.trim()) ?
+            //     currentInput :
+            //     (document.getElementById('koreanInput') ? document.getElementById('koreanInput').value : '');
+            // if (!inputVal || !inputVal.trim()) {
+            //     alert('먼저 문장을 입력하거나 생성한 뒤 시도해 주세요.');
+            //     return;
+            // }
+
+            // // grab existing translation data from memory
+            // const resultData = generatedHistory[currentInput];
+            // if (!resultData) {
+            //     alert('AI 결과가 화면에 표시된 상태에서만 Notion 저장이 가능합니다. 먼저 생성해주세요.');
+            //     return;
+            // }
+
+            // if (!confirm('해당 문장을 Notion에 저장하고 페이지를 생성하시겠습니까?')) return;
+
+            // // Provide simple UI feedback
+            // const previousGenerateText = document.getElementById('generateBtn') ? document.getElementById('generateBtn').innerText : null;
+            // if (document.getElementById('generateBtn')) document.getElementById('generateBtn').innerText = 'NOTION 저장 중...';
+
+            // try {
+            //     const resp = await fetch('/api/notion', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify({
+            //             currentInput: inputVal,
+            //             notionPublish: true,
+            //             dailyDbId,
+            //             sentenceDbId,
+            //             wordDbId,
+            //             resultData
+            //         })
+            //     });
+
+            //     const json = await resp.json();
+            //     if (!resp.ok) throw new Error(json.error || JSON.stringify(json));
+
+            //     if (json.notion && json.notion.pageId) {
+            //         const pageId = json.notion.pageId;
+            //         alert('Notion 페이지 생성 완료! 페이지 ID: ' + pageId + '\n(페이지 ID가 클립보드에 복사됩니다)');
+            //         try {
+            //             await navigator.clipboard.writeText(pageId);
+            //         } catch (e) {}
+            //     } else {
+            //         alert('Notion에 저장이 완료되었습니다. 응답을 확인하세요.');
+            //     }
+            // } catch (err) {
+            //     console.error('openNotion error', err);
+            //     alert('Notion 저장 중 오류가 발생했습니다: ' + (err.message || err));
+            // } finally {
+            //     if (document.getElementById('generateBtn') && previousGenerateText) document.getElementById('generateBtn').innerText = previousGenerateText;
+            // }
         };
 
         function hideAll() {
