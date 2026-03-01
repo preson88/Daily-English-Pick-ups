@@ -1,319 +1,344 @@
-export default async function handler(req, res) {
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "잘못된 접근입니다." });
-    }
-    // If client requested publishing to Notion, perform Notion API operations
-    if (req.body.notionPublish) {
-        // const notionKey = process.env.NOTION_KEY || "";
-        const notionKey = "315d872b-594c-81b8-9d2a-003733d37718";
-        if (!notionKey.trim()) {
-            return res
-                .status(500)
-                .json({ error: "서버에 NOTION_KEY가 설정되어 있지 않습니다." });
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="cAHLDiRWplB0TJxA8SWNiVKxoHTNyDi_MPbrKdCKJmg" />
+    <title>Daily English Pick-ups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5583094134831289" crossorigin="anonymous"></script>
+
+    <style>
+         :root {
+            --bg-color: #f7f6f2;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --border-color: #e8e6e1;
+            --sub-text: #7f8c8d;
+            --input-bg: #fdfdfd;
+            --note-bg: #ffffff;
+            --original-box-bg: #fdfaf4;
+            --point-color: #f39c12;
         }
-
-        const {
-            currentInput,
-            notionPublish,
-            resultData,
-            dailyDbId,
-            sentenceDbId,
-            wordDbId,
-        } = req.body;
-        if (!dailyDbId || !sentenceDbId || !wordDbId) {
-            return res.status(400).json({
-                error: "Notion DB ID들이 요청에 포함되어야 합니다. (dailyDbId, sentenceDbId, wordDbId)",
-            });
+        
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #ecf0f1;
+            --card-bg: #2c2c2c;
+            --border-color: #3d3d3d;
+            --sub-text: #95a5a6;
+            --input-bg: #1a1a1a;
+            --note-bg: #2c2c2c;
+            --original-box-bg: #3d3d3d;
         }
-
-        try {
-            // 1) Create visual page in user's Daily Note DB
-            const notionCreateBody = {
-                parent: { database_id: dailyDbId },
-                properties: {
-                    Name: {
-                        title: [{ text: { content: `오늘의 표현: ${currentInput}` } }],
-                    },
-                    Date: { date: { start: new Date().toISOString().split("T")[0] } },
-                },
-                children: [{
-                        object: "block",
-                        type: "quote",
-                        quote: {
-                            rich_text: [{ type: "text", text: { content: currentInput } }],
-                            color: "gray",
-                        },
-                    },
-                    // Standard callout
-                    {
-                        object: "block",
-                        type: "callout",
-                        callout: {
-                            icon: { type: "emoji", emoji: "👔" },
-                            color: "blue_background",
-                            rich_text: [{
-                                    type: "text",
-                                    text: { content: "Standard & Polite\n" },
-                                    annotations: { bold: true },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.standard && resultData.standard.en ?
-                                            resultData.standard.en + "\n" :
-                                            "",
-                                    },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.standard && resultData.standard.ko ?
-                                            resultData.standard.ko + "\n" :
-                                            "",
-                                    },
-                                    annotations: { color: "gray" },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: "\n💡 팁: " +
-                                            (resultData.standard && resultData.standard.tip ?
-                                                resultData.standard.tip :
-                                                ""),
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                    // Native callout
-                    {
-                        object: "block",
-                        type: "callout",
-                        callout: {
-                            icon: { type: "emoji", emoji: "💬" },
-                            color: "green_background",
-                            rich_text: [{
-                                    type: "text",
-                                    text: { content: "Native & Natural\n" },
-                                    annotations: { bold: true },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.native && resultData.native.en ?
-                                            resultData.native.en + "\n" :
-                                            "",
-                                    },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.native && resultData.native.ko ?
-                                            resultData.native.ko + "\n" :
-                                            "",
-                                    },
-                                    annotations: { color: "gray" },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: "\n💡 팁: " +
-                                            (resultData.native && resultData.native.tip ?
-                                                resultData.native.tip :
-                                                ""),
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                    // Slang callout
-                    {
-                        object: "block",
-                        type: "callout",
-                        callout: {
-                            icon: { type: "emoji", emoji: "🔥" },
-                            color: "purple_background",
-                            rich_text: [{
-                                    type: "text",
-                                    text: { content: "Idiom & Slang\n" },
-                                    annotations: { bold: true },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.slang && resultData.slang.en ?
-                                            resultData.slang.en + "\n" :
-                                            "",
-                                    },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: resultData.slang && resultData.slang.ko ?
-                                            resultData.slang.ko + "\n" :
-                                            "",
-                                    },
-                                    annotations: { color: "gray" },
-                                },
-                                {
-                                    type: "text",
-                                    text: {
-                                        content: "\n💡 팁: " +
-                                            (resultData.slang && resultData.slang.tip ?
-                                                resultData.slang.tip :
-                                                ""),
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                    { object: "block", type: "divider", divider: {} },
-                    {
-                        object: "block",
-                        type: "heading_2",
-                        heading_2: {
-                            rich_text: [{
-                                type: "text",
-                                text: { content: "줍줍 단어장 (Vocabulary Grid)" },
-                            }, ],
-                        },
-                    },
-                    // table block
-                    {
-                        object: "block",
-                        type: "table",
-                        table: {
-                            table_width: 2,
-                            has_column_header: true,
-                            children: [{
-                                type: "table_row",
-                                table_row: {
-                                    cells: [
-                                        [{
-                                            type: "text",
-                                            text: { content: "단어/표현" },
-                                            annotations: { bold: true },
-                                        }, ],
-                                        [{
-                                            type: "text",
-                                            text: { content: "뜻 (Meaning)" },
-                                            annotations: { bold: true },
-                                        }, ],
-                                    ],
-                                },
-                            }, ],
-                        },
-                    },
-                ],
-            };
-
-            // If voca exists, append rows to table via patching children after page creation
-            const notionRes = await fetch("https://api.notion.com/v1/pages", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${notionKey}`,
-                    "Notion-Version": "2022-06-28",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(notionCreateBody),
-            });
-
-            const notionData = await notionRes.json();
-            if (notionData.error)
-                throw new Error(
-                    notionData.error.message || "Notion page creation failed",
-                );
-
-            const createdPageId = notionData.id;
-
-            // 2) Create sentence entries (one per style)
-            const createSentence = async(en, ko, typeName) => {
-                return fetch("https://api.notion.com/v1/pages", {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${notionKey}`,
-                        "Notion-Version": "2022-06-28",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        parent: { database_id: sentenceDbId },
-                        properties: {
-                            English: { title: [{ text: { content: en || "" } }] },
-                            Korean: { rich_text: [{ text: { content: ko || "" } }] },
-                            Type: { select: { name: typeName } },
-                            "Linked Sentences": { relation: [{ id: createdPageId }] },
-                        },
-                    }),
-                });
-            };
-
-            const sentenceCreates = [];
-            if (resultData.standard && resultData.standard.en)
-                sentenceCreates.push(
-                    createSentence(
-                        resultData.standard.en,
-                        resultData.standard.ko,
-                        "Standard",
-                    ),
-                );
-            if (resultData.native && resultData.native.en)
-                sentenceCreates.push(
-                    createSentence(resultData.native.en, resultData.native.ko, "Native"),
-                );
-            if (resultData.slang && resultData.slang.en)
-                sentenceCreates.push(
-                    createSentence(resultData.slang.en, resultData.slang.ko, "Slang"),
-                );
-
-            const sentenceResults = await Promise.all(
-                sentenceCreates.map((p) => p.then((r) => r.json())),
-            );
-
-            // 3) Create word entries
-            const vocaList = Array.isArray(resultData.voca) ? resultData.voca : [];
-            const createWord = async(wordObj) => {
-                return fetch("https://api.notion.com/v1/pages", {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${notionKey}`,
-                        "Notion-Version": "2022-06-28",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        parent: { database_id: wordDbId },
-                        properties: {
-                            Word: { title: [{ text: { content: wordObj.word || "" } }] },
-                            Meaning: {
-                                rich_text: [{ text: { content: wordObj.meaning || "" } }],
-                            },
-                            "Linked Words": { relation: [{ id: createdPageId }] },
-                        },
-                    }),
-                });
-            };
-
-            const wordCreates = vocaList.map((v) => createWord(v));
-            const wordResults = await Promise.all(
-                wordCreates.map((p) => p.then((r) => r.json())),
-            );
-
-            return res.status(200).json({
-                ...resultData,
-                notion: {
-                    pageId: createdPageId,
-                    sentences: sentenceResults,
-                    words: wordResults,
-                },
-            });
-        } catch (notionErr) {
-            console.error("Notion Error:", notionErr);
-            return res.status(500).json({
-                error: "Notion 연동 중 오류가 발생했습니다: " +
-                    (notionErr.message || notionErr),
-            });
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
-    }
-}            word-break: keep-all;
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            position: relative;
+            padding-bottom: 160px;
+        }
+        
+        #themeToggleBtn {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--point-color);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        #themeToggleBtn:hover {
+            transform: scale(1.1);
+        }
+        
+        .header-area {
+            text-align: center;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .main-title:hover {
+            opacity: 0.7;
+        }
+        
+        .desc-toggle {
+            display: block;
+            margin: 10px auto 4px;
+            color: var(--point-color);
+            font-size: 13px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .description {
+            font-size: 14px;
+            color: var(--sub-text);
+            text-align: center;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .additional-info {
+            font-size: 13px;
+            color: var(--sub-text);
+            text-align: center;
+            margin-top: 8px;
+        }
+        
+        .input-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s;
+        }
+        
+        .input-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .input-box {
+            display: flex;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px;
+            align-items: center;
+        }
+        
+        #micBtn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        #koreanInput {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px 5px;
+            font-size: 15px;
+            outline: none;
+            width: 100%;
+            color: var(--text-color);
+        }
+        
+        #generateBtn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .center-btn-wrap {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .archive-main-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+        
+        #result-screen,
+        #archive-screen,
+        #flashcard-screen,
+        #loading-screen {
+            display: none;
+        }
+        
+        .action-buttons-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .action-btn.dark {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+        
+        .action-btn.saved {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+        /* pastel color variants for export buttons */
+        
+        .btn-png {
+            background-color: #a0d8ef;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-png:hover {
+            background-color: #92cfea;
+        }
+        
+        .btn-pdf {
+            background-color: #f7a1b0;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #f497ab;
+        }
+        
+        .btn-notion {
+            background-color: #b5e7a0;
+            border-color: #000;
+            color: #1f2937;
+        }
+        
+        .btn-notion:hover {
+            background-color: #a8dd95;
+        }
+        /* dark mode adjustments for pastel buttons */
+        
+        body.dark-mode .btn-png {
+            background-color: #6fa8dc;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-png:hover {
+            background-color: #609cce;
+        }
+        
+        body.dark-mode .btn-pdf {
+            background-color: #d6818b;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-pdf:hover {
+            background-color: #c8737d;
+        }
+        
+        body.dark-mode .btn-notion {
+            background-color: #86b96a;
+            color: #f7f7f7;
+            border-color: #fff;
+        }
+        
+        body.dark-mode .btn-notion:hover {
+            background-color: #78ae5e;
+        }
+        
+        #capture-area {
+            background-color: var(--note-bg);
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            transition: background-color 0.3s;
+        }
+        
+        .note-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--text-color);
+            padding-bottom: 10px;
+        }
+        
+        .original-sentence-box {
+            background-color: var(--original-box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            font-size: 15px;
+            color: var(--sub-text);
+            font-style: italic;
+            margin-bottom: 30px;
+            word-break: keep-all;
         }
         
         .section-block {
@@ -1375,6 +1400,7 @@ export default async function handler(req, res) {
         window.openNotion = async function() {
 
             alert('현재 Notion 저장 기능은 점검 중입니다.');
+
             // const clientId = 'YOUR_CLIENT_ID'; // replace with your integration's client ID
             // const redirectUri = encodeURIComponent(window.location.origin + '/api/auth/callback/notion');
             // const state = Math.random().toString(36).substring(2);
