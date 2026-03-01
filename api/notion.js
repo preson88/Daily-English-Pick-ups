@@ -4,8 +4,8 @@ export default async function handler(req, res) {
   }
   // If client requested publishing to Notion, perform Notion API operations
   if (req.body.notionPublish) {
-    // const notionKey = process.env.NOTION_KEY || "";
-    const notionKey = "315d872b-594c-81b8-9d2a-003733d37718";
+    const notionKey = process.env.NOTION_KEY || "";
+
     if (!notionKey.trim()) {
       return res
         .status(500)
